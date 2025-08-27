@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek Katre - Portfolio Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            color: #1f2937;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(30, 58, 138, 0.08), 0 2px 8px rgba(30, 58, 138, 0.04);
+            border: 1px solid rgba(30, 58, 138, 0.08);
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 8px 24px rgba(30, 58, 138, 0.25);
+            border: 4px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info p {
+            color: #4b5563;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            background: rgba(30, 58, 138, 0.08);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: #1e3a8a;
+            font-weight: 600;
+            border: 1px solid rgba(30, 58, 138, 0.12);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 24px rgba(30, 58, 138, 0.08), 0 2px 8px rgba(30, 58, 138, 0.04);
+            border: 1px solid rgba(30, 58, 138, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: white;
+            transform: translateX(4px);
+            box-shadow: 0 4px 16px rgba(30, 58, 138, 0.25);
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(30, 58, 138, 0.08), 0 2px 8px rgba(30, 58, 138, 0.04);
+            border: 1px solid rgba(30, 58, 138, 0.08);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: #1f2937;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #1e3a8a, #3b82f6) 1;
+            padding-bottom: 12px;
+            letter-spacing: -0.025em;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(30, 58, 138, 0.06);
+            border: 1px solid rgba(30, 58, 138, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(30, 58, 138, 0.12);
+            border-color: rgba(30, 58, 138, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            flex: 1;
+        }
+
+        .card-meta {
+            color: #1e3a8a;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: rgba(30, 58, 138, 0.06);
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card-content li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .card-content li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #1e3a8a;
+            font-size: 0.7rem;
+            top: 4px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: rgba(30, 58, 138, 0.04);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(30, 58, 138, 0.08);
+        }
+
+        .skill-category h3 {
+            color: #1e3a8a;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.15);
+        }
+
+        .education-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .education-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(30, 58, 138, 0.04);
+            border-radius: 12px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 28px rgba(30, 58, 138, 0.25);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .achievement-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .achievement-item {
+            background: linear-gradient(90deg, rgba(30, 58, 138, 0.06), rgba(59, 130, 246, 0.06));
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #1e3a8a;
+            border: 1px solid rgba(30, 58, 138, 0.08);
+        }
+
+        .placeholder-section {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .upload-area {
+            border: 2px dashed #1e3a8a;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            background: rgba(30, 58, 138, 0.02);
+        }
+
+        .upload-area:hover {
+            background: rgba(30, 58, 138, 0.06);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .nav-item {
+                margin: 0;
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <div class="profile-section">
+                <div class="profile-image">AK</div>
+                <div class="profile-info">
+                    <h1>Abhishek Katre</h1>
+                    <p>B.Tech Material Science & Engineering</p>
+                    <p>Indian Institute of Technology, Madras</p>
+                </div>
+            </div>
+            <div class="contact-info">
+                <span class="contact-item">📞 +91-7987560105</span>
+                <span class="contact-item">✉️ katreabhishek9162@gmail.com</span>
+                <span class="contact-item">🎓 CGPA: 7.24/10</span>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#overview" class="nav-link active" onclick="showSection('overview')">
+                        <span class="nav-icon">📊</span>
+                        Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#experience" class="nav-link" onclick="showSection('experience')">
+                        <span class="nav-icon">💼</span>
+                        Experience
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#projects" class="nav-link" onclick="showSection('projects')">
+                        <span class="nav-icon">🚀</span>
+                        Projects
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#education" class="nav-link" onclick="showSection('education')">
+                        <span class="nav-icon">🎓</span>
+                        Education
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#leadership" class="nav-link" onclick="showSection('leadership')">
+                        <span class="nav-icon">👑</span>
+                        Leadership
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#achievements" class="nav-link" onclick="showSection('achievements')">
+                        <span class="nav-icon">🏆</span>
+                        Achievements
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#documents" class="nav-link" onclick="showSection('documents')">
+                        <span class="nav-icon">📄</span>
+                        Documents
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#portfolio" class="nav-link" onclick="showSection('portfolio')">
+                        <span class="nav-icon">🎨</span>
+                        Portfolio
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Overview Section -->
+            <div id="overview" class="content-section active">
+                <h2 class="section-title">Professional Overview</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">4+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Major Projects</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">27+</span>
+                        <span class="stat-label">Sports Awards</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">7.24</span>
+                        <span class="stat-label">CGPA/10</span>
+                    </div>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Technical Skills</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Excel & VBA</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">SQL</span>
+                            <span class="skill-tag">Tableau</span>
+                            <span class="skill-tag">Power BI</span>
+                            <span class="skill-tag">Gen AI</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Coursework</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Probability & Statistics</span>
+                            <span class="skill-tag">Economics</span>
+                            <span class="skill-tag">Material Science</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Specializations</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Data Analytics</span>
+                            <span class="skill-tag">Product Management</span>
+                            <span class="skill-tag">Strategy Consulting</span>
+                            <span class="skill-tag">Leadership</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div id="experience" class="content-section">
+                <h2 class="section-title">Professional Experience</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Nation With Namo - Associate Consultant</div>
+                        <div class="card-meta">Jul 2024 – Present</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Built governance dashboards using clustering, regression on 9 KPIs; improved scheme targeting across high-priority regions</li>
+                            <li>Created personalized candidate personas using 30K survey & Form 20 data; enabled stronger panel for assembly elections</li>
+                            <li>Advised senior leadership on content strategy; drove 2/4 seat wins including key 2 swing recovery through real-time pivots</li>
+                            <li>Built a 7-KPI candidate scoring model; shortlisted 40 from 200+ to improve selection for Delhi and West Bengal elections</li>
+                            <li>Conducted 100+ field studies in 7ACs to find governance gaps; delivered localized development strategies in key regions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">IIT Madras - Analyst Intern</div>
+                        <div class="card-meta">May 2023 – Jul 2023</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Analyzed ₹400Cr in 100+ funds; applied ESG metrics to FMV–ROI tracking, improving funds long-term yield tracking</li>
+                            <li>Identified 24 funds eroded by inflation and built donor reactivation plans to revive assets and restore financial/social impact</li>
+                            <li>Launched IITM Founder Circle; scaled alumni investment infra via CRM revamp & GTM, engaging 37K+ key stakeholders</li>
+                            <li>Reviewed CSR & research proposals, applying ESG criteria to guide fund allocation for sustainable, high-impact initiatives</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Zenith - Founder Office Intern</div>
+                        <div class="card-meta">Jan 2023 – Mar 2023</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Led GTM and strategic planning for a $1M VR EdTech product; drove 25% revenue growth across a base of 10K+ students</li>
+                            <li>Improved user engagement by 20%, CSAT by 15% by launching in-app video calls for learner-instructor interaction gaps</li>
+                            <li>Led UAT across 3 platforms; ensured feature stability and operational alignment through cross-functional collaboration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Bhansali Polymer Ltd. - Research Analyst Intern</div>
+                        <div class="card-meta">Apr 2022 – Jun 2022</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Analyzed 100+ ABS products to optimize application fit; improved business yield by 5% and expanded addressable market</li>
+                            <li>Proposed process changes improving pipe durability by 3% & storage efficiency by 2% through polymerization optimization</li>
+                            <li>Assessed product-market alignment across 50+ countries; surfaced portfolio insights to support strategic export decisions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div id="projects" class="content-section">
+                <h2 class="section-title">Key Projects</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Cold Bath Therapy System (ARCI)</div>
+                        <div class="card-meta">Jun 2023 – Jul 2024</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Identified $750M market for cold therapy; built MVP bath system achieving 95% thermal stability via peltier integration</li>
+                            <li>Validated core use case by designing UI & product prototype; led usability testing and thermal performance analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">NextLeap: Product Manager Fellowship</div>
+                        <div class="card-meta">May 2023 – Aug 2023</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Graduated in top 10% of 260+ cohort; completed 8 projects</li>
+                            <li>Reduced Uber ride cancellations by 20% by designing 3 solutions using cohort analysis & insights from 60+ user interviews</li>
+                            <li>Led Netflix & Swiggy GTM pilots; built MVP, optimized funnels, created PRD backed by research & user journey mapping</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Criminal Analytics Platform</div>
+                        <div class="card-meta">Jun 2023 – Jul 2024</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Analyzed 300+ criminal cases via Power BI; identified behavioral patterns in poison-related homicides across key variables</li>
+                            <li>Visualized crime trends by age, gender, region & year; enabled data-backed strategy for state-level law enforcement teams</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education Section -->
+            <div id="education" class="content-section">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="education-grid">
+                    <div class="education-item">
+                        <div>
+                            <h3>B.Tech. Material Science & Engineering</h3>
+                            <p>Indian Institute of Technology, Madras</p>
+                        </div>
+                        <div>
+                            <strong>7.24/10 CGPA</strong><br>
+                            <em>2024</em>
+                        </div>
+                    </div>
+                    
+                    <div class="education-item">
+                        <div>
+                            <h3>XII - H.S.C (Maharashtra State Board)</h3>
+                            <p>Saraswati Junior College, Nagpur</p>
+                        </div>
+                        <div>
+                            <strong>80.6%</strong><br>
+                            <em>2019</em>
+                        </div>
+                    </div>
+                    
+                    <div class="education-item">
+                        <div>
+                            <h3>X - SSC (Maharashtra State Board)</h3>
+                            <p>Bhonsala Military School, Nagpur</p>
+                        </div>
+                        <div>
+                            <strong>86.6%</strong><br>
+                            <em>2017</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leadership Section -->
+            <div id="leadership" class="content-section">
+                <h2 class="section-title">Leadership Positions</h2>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Institute Sports Secretary, IIT Madras</div>
+                        <div class="card-meta">Apr 2023 – Jul 2024</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Elected by 11K+ students to lead IITM sports; managed execution of a ₹7.5Cr portfolio across ops, infra, user engagement</li>
+                            <li>Directed a 150+ cross-functional team across 7 verticals; scaled athletic operations impacting 400+ users across 22 sports</li>
+                            <li>Conceptualized and launched Sportify, a digital engagement platform; onboarded 2.5K+ users; doubled active participation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Tapti Hostel Sports Secretary</div>
+                        <div class="card-meta">Apr 2022 – Apr 2023</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Founded IITM's Calisthenics community; scaled from 50+ to 550+ users via 6 week continuous engagement & 5 workshops</li>
+                            <li>Managed ₹4.5L budget, initiated ₹7.5L alumni funding for sports infra; streamlined docs to aid future hostel fundraising</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">IITM Sports Organizing Committee: Head - Fundraising & Outreach</div>
+                        <div class="card-meta">Apr 2022 – Apr 2023</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Founded PAN-IIT Cycling Club; scaled annual events to engage 1100+ cyclists across 15+ IITs by centralized coordination</li>
+                            <li>Ran Strava-led national challenge with 500+ riders; led PAN-IIT Cycling event with 1700+ participants across India</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Section -->
+            <div id="achievements" class="content-section">
+                <h2 class="section-title">Achievements & Awards</h2>
+                
+                <div class="achievement-list">
+                    <div class="achievement-item">
+                        <h3>🏅 Sports Excellence</h3>
+                        <p>Won 10+ golds, 12+ silvers, and 5+ bronzes in IITM tournaments and inter-college competitions over 4 years</p>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <h3>🥇 Pole Vault Champion</h3>
+                        <p>Gold Medal - Pole Vault (3m) IITM Sports Fest</p>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <h3>🥈 Track & Field</h3>
+                        <p>7th Rank - Javelin, Inter IIT Sports Meet | Silver – 4x50m Relay, Schroeter</p>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <h3>🚴 Cycling Excellence</h3>
+                        <p>Gold - Pan IIT Cycling Kick-off (683 km)</p>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <h3>👑 Mr. IITM 2024</h3>
+                        <p>Crowned Mr. IITM 2024 in a campus-wide bodybuilding contest, outperforming 10,000+ students across all streams</p>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <h3>🏔️ Adventure & Fitness</h3>
+                        <p>7+ years of calisthenics practice; completed 6 treks including a 15,000ft Himalayan summit</p>
+                    </div>
+                    
+                    <div class="achievement-item">
+                        <h3>🤝 Social Impact</h3>
+                        <p>Teach For Peace (Kashmir): Mentored and stayed with 35 orphan children and tutored them personally for 1 month</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Section (Expandable) -->
+            <div id="documents" class="content-section">
+                <h2 class="section-title">Documents & Resources</h2>
+                
+                <div class="placeholder-section">
+                    <div class="placeholder-icon">📄</div>
+                    <h3>Document Repository</h3>
+                    <p>Upload and organize your professional documents, certificates, and transcripts here.</p>
+                    
+                    <div class="upload-area" onclick="alert('File upload functionality can be added here')">
+                        <p><strong>Click to upload documents</strong></p>
+                        <p>Supported formats: PDF, DOC, DOCX, JPG, PNG</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Section (Expandable) -->
+            <div id="portfolio" class="content-section">
+                <h2 class="section-title">Project Portfolio & Decks</h2>
+                
+                <div class="placeholder-section">
+                    <div class="placeholder-icon">🎨</div>
+                    <h3>Project Showcase</h3>
+                    <p>Add your presentation dec
